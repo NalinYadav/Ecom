@@ -1,4 +1,3 @@
-const mongoose = require("mongoose");
 const Product = require("../models/Product");
 const createProduct = async (req, res) => {
   const data = req.body;
@@ -24,8 +23,17 @@ const getProduct = async (req, res) => {
 };
 
 const listProducts = async (req, res) => {
+  const brand = req.query.brand;
+  const category = req.query.category;
+  let recievedProducts;
   try {
-    const recievedProducts = await Product.find();
+    if (brand) {
+      recievedProducts = await Product.find({ brand });
+    } else if (category) {
+      recievedProducts = await Product.find({ category });
+    } else {
+      recievedProducts = await Product.find();
+    }
     res.status(200).json(recievedProducts);
   } catch (err) {
     res.status(500).json(err);

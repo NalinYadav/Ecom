@@ -12,4 +12,11 @@ const isNumber = (data) => {
   return false;
 };
 
-module.exports = { isNumber, isString };
+const isBool = (data) => {
+  if (typeof data === "boolean") {
+    return true;
+  }
+  return false;
+};
+
+module.exports = { isNumber, isString, isBool };

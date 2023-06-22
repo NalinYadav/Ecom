@@ -68,8 +68,7 @@ const productSchema = new mongoose.Schema({
     type: String,
   },
   vendor: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Vendor",
+    type: String,
     required: true,
   },
   customFields: {
