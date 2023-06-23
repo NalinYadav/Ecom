@@ -1,4 +1,5 @@
 const Product = require("../models/Product");
+const { isValidId } = require("../helper/helper");
 
 const createProduct = async (req, res) => {
   const data = req.body;
@@ -12,7 +13,10 @@ const createProduct = async (req, res) => {
 
 const getProduct = async (req, res) => {
   try {
-    const recievedProduct = await Product.findById(req.params.id).populate(
+    if (!isValidId(req.params.id)) {
+      return res.status(404).json("Invalid id");
+    }
+    const recievedProduct = await Product.findById(req.params.id)?.populate(
       "category"
     );
 
@@ -44,6 +48,13 @@ const listProducts = async (req, res) => {
 
 const updateProduct = async (req, res) => {
   try {
+    if (!isValidId(req.params.id)) {
+      return res.status(404).json("Invalid id");
+    }
+    const recievedProduct = await Product.findById(req.params.id);
+
+    if (!recievedProduct) return res.status(404).json("Product not found");
+
     const updatedProduct = await Product.findByIdAndUpdate(
       req.params.id,
       {
@@ -59,6 +70,12 @@ const updateProduct = async (req, res) => {
 
 const deleteProduct = async (req, res) => {
   try {
+    if (!isValidId(req.params.id)) {
+      return res.status(404).json("Invalid id");
+    }
+    const recievedProduct = await Product.findById(req.params.id);
+
+    if (!recievedProduct) return res.status(404).json("Product not found");
     await Product.findByIdAndDelete(req.params.id);
     res.status(200).json("Product deleted successfully");
   } catch (err) {

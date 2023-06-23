@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const Order = require("../models/Order");
+const { isValidId } = require("../helper/helper");
+
 const createOrder = async (req, res) => {
   const data = req.body;
   //
@@ -13,6 +15,9 @@ const createOrder = async (req, res) => {
 
 const getOrder = async (req, res) => {
   try {
+    if (!isValidId(req.params.id)) {
+      return res.status(404).json("Invalid id");
+    }
     const recievedOrder = await Order.findById(req.params.id);
     if (!recievedOrder) return res.status(404).json("Order not found");
 
@@ -39,6 +44,12 @@ const listOrders = async (req, res) => {
 
 const updateOrder = async (req, res) => {
   try {
+    if (!isValidId(req.params.id)) {
+      return res.status(404).json("Invalid id");
+    }
+    const recievedOrder = await Order.findById(req.params.id);
+    if (!recievedOrder) return res.status(404).json("Order not found");
+
     const updatedOrder = await Order.findByIdAndUpdate(
       req.params.id,
       {
@@ -54,6 +65,12 @@ const updateOrder = async (req, res) => {
 
 const deleteOrder = async (req, res) => {
   try {
+    if (!isValidId(req.params.id)) {
+      return res.status(404).json("Invalid id");
+    }
+    const recievedOrder = await Order.findById(req.params.id);
+    if (!recievedOrder) return res.status(404).json("Order not found");
+
     await Order.findByIdAndDelete(req.params.id);
     res.status(200).json("Order deleted successfully");
   } catch (err) {

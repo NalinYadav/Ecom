@@ -1,4 +1,5 @@
 const ProductCategory = require("../models/ProductCategory");
+const { isValidId } = require("../helper/helper");
 
 const createCategory = async (req, res) => {
   const data = req.body;
@@ -12,9 +13,12 @@ const createCategory = async (req, res) => {
 
 const getCategory = async (req, res) => {
   try {
+    if (!isValidId(req.params.id)) {
+      return res.status(404).json("Invalid id");
+    }
     const recievedCategory = await ProductCategory.findById(req.params.id);
-
     if (!recievedCategory) return res.status(404).json("Category not found");
+
     res.status(200).json(recievedCategory);
   } catch (err) {
     res.status(500).json(err);
@@ -38,6 +42,12 @@ const listCategories = async (req, res) => {
 
 const updateCategory = async (req, res) => {
   try {
+    if (!isValidId(req.params.id)) {
+      return res.status(404).json("Invalid id");
+    }
+    const recievedCategory = await ProductCategory.findById(req.params.id);
+    if (!recievedCategory) return res.status(404).json("Category not found");
+
     const updatedCategory = await ProductCategory.findByIdAndUpdate(
       req.params.id,
       {
@@ -53,6 +63,12 @@ const updateCategory = async (req, res) => {
 
 const deleteCategory = async (req, res) => {
   try {
+    if (!isValidId(req.params.id)) {
+      return res.status(404).json("Invalid id");
+    }
+    const recievedCategory = await ProductCategory.findById(req.params.id);
+    if (!recievedCategory) return res.status(404).json("Category not found");
+
     await ProductCategory.findByIdAndDelete(req.params.id);
     res.status(200).json("Category deleted successfully");
   } catch (err) {

@@ -19,4 +19,8 @@ const isBool = (data) => {
   return false;
 };
 
-module.exports = { isNumber, isString, isBool };
+const isValidId = (id) => {
+  return id.match(/^[0-9a-fA-F]{24}$/);
+};
+
+module.exports = { isNumber, isString, isBool, isValidId };
