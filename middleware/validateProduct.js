@@ -29,12 +29,6 @@ const validateProduct = (req, res, next) => {
     return res.status(400).json("Brand has to be a string");
   }
 
-  if (!data.category || !isString(data.category)) {
-    if (!data.category) return res.status(400).json("category is required");
-
-    return res.status(400).json("category has to be a string");
-  }
-
   if (!data.regularPrice || !isNumber(data.regularPrice)) {
     if (!data.regularPrice)
       return res.status(400).json("Regular Price is required");

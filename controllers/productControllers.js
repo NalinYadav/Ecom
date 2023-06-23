@@ -1,4 +1,5 @@
 const Product = require("../models/Product");
+
 const createProduct = async (req, res) => {
   const data = req.body;
   try {
@@ -11,11 +12,12 @@ const createProduct = async (req, res) => {
 
 const getProduct = async (req, res) => {
   try {
-    const recievedProduct = await Product.findById(req.params.id);
+    const recievedProduct = await Product.findById(req.params.id).populate(
+      "category"
+    );
 
     if (!recievedProduct) return res.status(404).json("Product not found");
 
-    if (!recievedProduct) res.status(404).json("Product not found");
     res.status(200).json(recievedProduct);
   } catch (err) {
     res.status(500).json(err);
